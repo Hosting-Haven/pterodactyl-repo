@@ -12,4 +12,4 @@ We are committed to fostering a welcoming and inclusive environment for all cont
 
 ## Reporting Issues
 
-If you experience or witness unacceptable behavior, please contact [contact@hostinghaven.us].
+If you experience or witness unacceptable behavior, please contact contact@hostinghaven.us.

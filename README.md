@@ -20,4 +20,4 @@ If you’d like to contribute new or updated egg files, please see the [CONTRIBU
 
 ## License
 
-This repository is licensed under [LICENSE]. Please see the file for details.
+This repository is licensed under GNU General Public License v3.0. Please see the file for details.
