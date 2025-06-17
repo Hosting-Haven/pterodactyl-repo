@@ -1,29 +1,18 @@
 #!/bin/bash
-set -e
+# 1) Calculate the query port from SERVER_PORT
+QUERY_PORT=$(( SERVER_PORT - 1000 ))
 
-SERVER_PORT="${SERVER_PORT}"  # Provided by Pterodactyl
-QUERY_PORT=$((SERVER_PORT - 1000))
-
-echo -e "\e[1;34m==== Hosting Haven EaglerCraft Startup ====\e[0m"
-echo -e "\e[36mPreparing to launch your server on port $SERVER_PORT...\e[0m"
-
-# -- Warn if jar is missing --
-if [ ! -f "$JARFILE" ]; then
-    echo -e "\e[1;33m[!]\e[0m Server JAR not found: \e[31m$JARFILE\e[0m"
-    echo -e "\e[1;33m[~]\e[0m If this is the first launch, it may take a few minutes to download and prepare the server..."
-fi
-
-# -- Set query-port in server.properties --
-if [ -f server.properties ]; then
-    echo -e "\e[1;34m[~]\e[0m Setting \e[33mquery-port=$QUERY_PORT\e[0m..."
-    if grep -q "^query-port=" server.properties; then
-        sed -i "s/^query-port=.*/query-port=$QUERY_PORT/" server.properties
-    else
-        echo "query-port=$QUERY_PORT" >> server.properties
-    fi
+# 2) Update or append query_port in server.properties
+if grep -q '^query_port=' server.properties; then
+  sed -i "s/^query_port=.*/query_port=${QUERY_PORT}/" server.properties
 else
-    echo -e "\e[1;33m[!]\e[0m server.properties not found — skipping query-port config."
+  echo "query_port=${QUERY_PORT}" >> server.properties
 fi
 
-# -- Start server --
-java -Xms128M -XX:MaxRAMPercentage=95.0 -Dterminal.jline=false -Dterminal.ansi=true -jar {{SERVER_JARFILE}}
+# 3) Print the “downloading jar” banner
+printf "\n ________________________________________________________\n| IF DOWNLOADING VANILLA JAR, IT MAY TAKE A FEW MINUTES. |\n|________________________________________________________|\n"
+
+# 4) Finally exec Java on the real jar. Make sure ${SERVER_JARFILE} matches your actual jar name.
+exec java -Xms128M -XX:MaxRAMPercentage=95.0 \
+  -Dterminal.jline=false -Dterminal.ansi=true \
+  -jar ${SERVER_JARFILE}
