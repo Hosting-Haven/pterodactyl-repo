@@ -1,6 +1,6 @@
 #!/bin/bash
 # 1) Calculate the query port from SERVER_PORT
-QUERY_PORT=$(( SERVER_PORT - 1000 ))
+QUERY_PORT=$(( SERVER_PORT ))
 
 # 2) Update or append query_port in server.properties
 if grep -q '^query_port=' server.properties; then
